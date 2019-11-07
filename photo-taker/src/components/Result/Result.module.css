@@ -1,0 +1,22 @@
+.container {
+  font-family: "Roboto", sans-serif;
+  margin: 5%;
+}
+
+.card {
+  font-size: 30px;
+  padding: 30px;
+}
+
+.qrCode {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  text-align: center;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+  font-size: 40px !important;
+  width: 100%;
+}

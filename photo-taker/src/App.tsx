@@ -1,6 +1,11 @@
 import React from "react";
 import Camera from "./components/Camera";
 import QRCode from "qrcode.react";
+import Instructions from "./components/Instructions";
+import { CircularProgress } from "@material-ui/core";
+import styles from "./App.module.css";
+import { style } from "@material-ui/system";
+import Result from "./components/Result";
 
 enum STEP {
   INSTRUCTIONS,
@@ -25,6 +30,7 @@ const App = () => {
   const [url, setUrl] = React.useState<string>("");
   const [currentStep, setCurrentStep] = React.useState(STEP.INSTRUCTIONS);
   const [loading, setLoading] = React.useState(false);
+  const [imageData, setImageData] = React.useState("");
 
   const handleCapture = async (images: string[]) => {
     setLoading(true);
@@ -46,6 +52,7 @@ const App = () => {
         shortUrls: [newUrl]
       } = await response.json();
       setUrl(newUrl);
+      setImageData(image);
       console.log(newUrl);
     };
 
@@ -88,35 +95,26 @@ const App = () => {
 
   switch (currentStep) {
     case STEP.INSTRUCTIONS:
-      return (
-        <button
-          style={{ color: "#fff", fontSize: "100px" }}
-          onClick={() => advance()}
-        >
-          Instructions
-        </button>
-      );
+      return <Instructions onAdvance={advance} />;
     case STEP.TAKE_PHOTOS:
       return loading ? (
-        <span>"Loading..."</span>
+        <div className={styles.loadingContainer}>
+          <CircularProgress
+            color="secondary"
+            className={styles.loading}
+            size={400}
+          />
+        </div>
       ) : (
         <Camera onCapture={handleCapture} />
       );
     case STEP.DOWNLOAD:
       return (
-        <div>
-          <button
-            style={{
-              color: "#fff",
-              fontSize: "100px",
-              backgroundColor: "#000066"
-            }}
-            onClick={() => advance()}
-          >
-            Start Over
-          </button>
-          <QRCode value={url} size={600} />
-        </div>
+        <Result url={url} onAdvance={advance}>
+          <div className={styles.imageContainer}>
+            <img src={imageData} alt="" className={styles.image} />
+          </div>
+        </Result>
       );
   }
 };

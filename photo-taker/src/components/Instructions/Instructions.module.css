@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+
+.card {
+  font-size: 30px;
+  padding: 15px;
+}
+
+.card li {
+  margin-bottom: 10px;
+}
+
+.container > div {
+  width: 90%;
+  margin: auto;
+}
+
+.button {
+  text-align: center;
+  margin-top: 20px !important;
+  font-size: 60px !important;
+  width: 100%;
+}
