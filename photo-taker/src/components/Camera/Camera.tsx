@@ -72,7 +72,7 @@ const Camera: React.FC<CameraProps> = ({ onCapture }) => {
       />
       <Countdown
         key={images.length}
-        time={images.length === 0 ? 3 : 2}
+        time={images.length === 0 ? 10 : 5}
         callback={capture}
       />
       {showFlash && <div className={styles.flash} />}
