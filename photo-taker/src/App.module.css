@@ -13,6 +13,7 @@
 }
 
 .image {
-  width: 483px;
-  height: 1780px;
+  width: 50%;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
