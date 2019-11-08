@@ -39,6 +39,28 @@ const videoConstraints = {
   width: 768
 };
 
+const filpImage = async (imageData: string): Promise<string> => {
+  console.log(imageData);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const image = await new Promise<HTMLImageElement>(resolve => {
+    const imageContainer = document.createElement("img");
+    imageContainer.onload = function() {
+      resolve(this as HTMLImageElement);
+    };
+    imageContainer.src = imageData;
+  });
+
+  console.log(image);
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.translate(image.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(image, 0, 0);
+
+  return canvas.toDataURL("image/jpeg");
+};
+
 const Camera: React.FC<CameraProps> = ({ onCapture }) => {
   const webcamRef = React.useRef(null);
   const [showFlash, setShowFlash] = React.useState(false);
@@ -47,7 +69,11 @@ const Camera: React.FC<CameraProps> = ({ onCapture }) => {
   const capture = React.useCallback(async () => {
     if (webcamRef && webcamRef.current) {
       setShowFlash(true);
-      const imageSrc: string = (webcamRef as any).current.getScreenshot();
+      let imageSrc: string = (webcamRef as any).current.getScreenshot();
+      if (images.length % 2 === 1) {
+        imageSrc = await filpImage(imageSrc);
+        console.log(imageSrc);
+      }
       if (images.length < 3) {
         setImages([...images, imageSrc]);
         setTimeout(() => setShowFlash(false), 500);
